@@ -3,10 +3,10 @@
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     header('Access-Control-Allow-Methods: POST');
-    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-    include_once '../../config/Database.php';
-    include_once '../../models/HardwareStatus.php';
+    include_once '../../../config/Database.php';
+    include_once '../../../models/HardwareStatus.php';
     
 
     // Instantiate DB & connect
@@ -15,36 +15,57 @@
 
     // Instantiate status object
     $status = new HardwareStatus($db);
-
+    
     // Get raw posted data
     // $data = json_decode(file_get_contents("php://input"));
-    if (isset($_POST['status'])) {
-      $data = $_POST['status'];
-      // echo $data;
+    if (isset($_POST['meter_number'])) {
+      $status->meter_number = $_POST['meter_number'];
 
-      http_response_code(202);
-
-      $data_arr = explode("|", $data);
-
-      $status->mains_state = $data_arr[0][0] ? "on" : "off";
-      $status->device_state = $data_arr[0][1] ? "on" : "off";
-      $status->potential_loss = $data_arr[0][2] ? "collapsed" : "restored";
-      $status->bypass_state = $data_arr[0][3] ? "bypassed" : "normal";
-      $status->voltage = $data_arr[1];
-      $status->frequency = $data_arr[2];
-      $status->current_consumption = $data_arr[3];
-      $status->kwh = $data_arr[4];
-      $status->temperature = $data_arr[5];
-
-      try {
-        $status->update_status();
-      } catch(Exception $e) {
-        echo $e;
+      if (isset($_POST['status'])) {
+        
+        $data = $_POST['status'];
+        // $data = "11110|230|49.9|12345|12345.7|100";
+        // echo $data;
+        
+        http_response_code(202);
+  
+        $data_arr = explode("|", $data);
+  
+  
+        $status->mains_in = $data_arr[0][0] ? "on" : "off";
+        $status->mains_out = $data_arr[0][1] ? "on" : "off";
+        $status->device_state = $data_arr[0][2] ? "on" : "off";
+        $status->potential_loss = $data_arr[0][3] ? "collapsed" : "restored";
+        $status->bypass_state = $data_arr[0][4] ? "bypassed" : "normal";
+        $status->voltage = $data_arr[1];
+        $status->frequency = $data_arr[2];
+        $status->current_consumption = $data_arr[3];
+        $status->kwh = $data_arr[4];
+        $status->temperature = $data_arr[5];
+        $status->temp_everything = $data;
+  
+        try {
+          $status->update_status();
+          echo json_encode(
+            array(
+              'error' => false,
+              'code' => 200,
+              'message' => 'Status Updated'
+            )
+          );
+        } catch(Exception $e) {
+          echo $e;
+        }
+        
+      } else {
+        http_response_code(412);
       }
-      
-    } 
+    } else {
+      http_response_code(412);
+    }
+
     
-    // 111|230|49.9|12345|12345.7|100
+    // 1110|230|49.9|12345|12345.7|100
 
     
     // $status->device_id = $data->device_id;
