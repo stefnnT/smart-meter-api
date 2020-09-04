@@ -6,9 +6,9 @@
         // DB Params
 
         private $host = 'sh4ob67ph9l80v61.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
-        private $db_name = 'qs9lpv6hqxtcogrq';
-        private $username = 'bvkoc0a33cw1wkxj';
-        private $password = 'arqp5u5pd3fcaplf';
+        private $db_name = 'ortjq1q1r4fzdarm';
+        private $username = 'alsx4rddg2onau6z';
+        private $password = 'jy75kfv576amho6v';
 
         // private $host = 'localhost';
         // private $db_name = 'smart_meter';
