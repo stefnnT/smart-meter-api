@@ -35,6 +35,7 @@
         try {
           $customer->add_authentication();
           $customer->add_harware_state_control();
+          $customer->add_meter_recharge();
           
           echo json_encode(
             array(

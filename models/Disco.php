@@ -119,6 +119,30 @@
       return false;
     }
 
+    public function add_meter_recharge() {
+      $query = 'INSERT INTO meter_recharge SET 
+                   meter_number = :meter_number,
+                   units = 0,
+                   loaded = "no"';
+      
+      $stmt = $this->conn->prepare($query);
+
+      // Clean data
+      $this->meter_number = htmlspecialchars(strip_tags($this->meter_number));
+      
+      //Bind named parameters
+      $stmt->bindParam(':meter_number', $this->meter_number);
+      
+      //Execute query
+      if ($stmt->execute()) {
+        return true;
+      }
+      
+      //Error message
+      printf("Error: ", $stmt->error);
+      return false;
+    }
+
 
 
 // not yet done
@@ -199,7 +223,13 @@
 
     public function get_last_status($meter_number) {
       //query
-      $query = 'SELECT * FROM  device_status WHERE meter_id = :meter_number ORDER BY time_stamp DESC LIMIT 1';
+      $query = 'SELECT meter_id, mains_in, mains_out, device_state, 
+                  potential_loss, bypass_state, format(voltage, 1) as voltage,
+                  format(frequency, 1) as frequency,
+                  format(current_consumption, 1) as current_consumption,
+                  format(kwh, 2) as kwh, format(kwh_used, 3) as kwh_used,
+                  format(temperature, 1) as temperature, time_stamp
+                  FROM  device_status WHERE meter_id = :meter_number ORDER BY time_stamp DESC LIMIT 1';
       
       // Prepare statement
       $stmt = $this->conn->prepare($query);
@@ -269,7 +299,28 @@
       //Error message
       printf("Error: ", $stmt->error);
       return false;
+    
     }
+
+    public function tofloat($num) {
+      $dotPos = strrpos($num, '.');
+      $commaPos = strrpos($num, ',');
+      $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
+          ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
+    
+      if (!$sep) {
+          return floatval(preg_replace("/[^0-9]/", "", $num));
+      }
+  
+      return floatval(
+          preg_replace("/[^0-9]/", "", substr($num, 0, $sep)) . '.' .
+          preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)))
+      );
+    }
+
+
+
+
 
     // Retrieve all stakeholders
     public function read_all() {

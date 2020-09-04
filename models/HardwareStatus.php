@@ -17,6 +17,7 @@
         public $frequency;
         public $current_consumption;
         public $kwh;
+        public $kwh_used;
         public $temperature;
         public $temp_everything;
 
@@ -39,6 +40,7 @@
                         frequency = :frequency,
                         current_consumption = :current_consumption,
                         kwh = :kwh,
+                        kwh_used = :kwh_used,
                         temp_everything = :temp_everything,
                         temperature = :temperature ';
             
@@ -55,6 +57,7 @@
             $this->frequency = htmlspecialchars(strip_tags($this->frequency));
             $this->current_consumption = htmlspecialchars(strip_tags($this->current_consumption));
             $this->kwh = htmlspecialchars(strip_tags($this->kwh));
+            $this->kwh_used = htmlspecialchars(strip_tags($this->kwh_used));
             $this->temperature = htmlspecialchars(strip_tags($this->temperature));
             $this->temp_everything = htmlspecialchars(strip_tags($this->temp_everything));
             
@@ -69,6 +72,7 @@
             $stmt->bindParam(':frequency', $this->frequency);
             $stmt->bindParam(':current_consumption', $this->current_consumption);
             $stmt->bindParam(':kwh', $this->kwh);
+            $stmt->bindParam(':kwh_used', $this->kwh_used);
             $stmt->bindParam(':temperature', $this->temperature);
             $stmt->bindParam(':temp_everything', $this->temp_everything);
 
@@ -102,6 +106,76 @@
             printf("Error: ", $stmt->error);
             return false;
         }
+
+        public function get_unused_token() {
+            $query = 'SELECT * FROM meter_recharge WHERE meter_number = :meter_number ORDER BY created_at DESC LIMIT 1';
+
+            $stmt = $this->conn->prepare($query);
+            
+            // Clean data
+            $this->meter_number = htmlspecialchars(strip_tags($this->meter_number));
+            
+            // Bind named parameters
+            $stmt->bindParam(':meter_number', $this->meter_number);
+
+            //Execute query
+            if ($stmt->execute()) {
+                return $stmt;
+            }
+            
+            //Error message
+            printf("Error: ", $stmt->error);
+            return false;
+        }
+
+
+        public function get_current_units_left() {
+            $query = 'SELECT format(kwh, 2) as kwh FROM device_status WHERE meter_id = :meter_number ORDER BY time_stamp DESC LIMIT 1';
+
+            $stmt = $this->conn->prepare($query);
+            
+            // Clean data
+            $this->meter_number = htmlspecialchars(strip_tags($this->meter_number));
+            
+            // Bind named parameters
+            $stmt->bindParam(':meter_number', $this->meter_number);
+
+            //Execute query
+            if ($stmt->execute()) {
+                $result = $stmt->fetch();
+                // echo $result->kwh;
+                return $result->kwh;
+            }
+            
+            //Error message
+            printf("Error: ", $stmt->error);
+            return false;
+        }
+
+        public function udpate_recharge_status() {
+            $query = 'UPDATE meter_recharge SET loaded = "yes" WHERE meter_number = :meter_number ORDER BY created_at DESC LIMIT 1';
+
+            $stmt = $this->conn->prepare($query);
+            
+            // Clean data
+            $this->meter_number = htmlspecialchars(strip_tags($this->meter_number));
+            
+            // Bind named parameters
+            $stmt->bindParam(':meter_number', $this->meter_number);
+
+            //Execute query
+            if ($stmt->execute()) {
+                return $stmt;
+            }
+            
+            //Error message
+            printf("Error: ", $stmt->error);
+            return false;
+        }
+
+        
+
+
 
 
 

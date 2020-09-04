@@ -6,6 +6,7 @@
 
   include_once '../../../config/Database.php';
   include_once '../../../models/Disco.php';
+  include_once '../../../models/History.php';
 
   // Instantiate DB & connect
   $database = new Database();
@@ -14,6 +15,7 @@
   // Instantiate site details object
   $customers = new Disco($db);
   $checks = new Disco($db);
+  $history = new History($db);
 
   // Query data
   $result = $customers->get_all_subscribers();
@@ -29,7 +31,9 @@
 
       
       foreach ($result->fetchAll() as $subscriber) {
+          $history->meter_number = $subscriber->meter_number;
           $post_item = array(
+            "stakeholderId" => $subscriber->stakeholder_id,
             "subscriberBiodata" => array(
               "firstName" => $subscriber->first_name,
               "lastName" => $subscriber->last_name, 
@@ -43,7 +47,9 @@
               "lastDeviceStatus" => $checks->get_last_status($subscriber->meter_number)
             ),
             "meterUsageHistory" => array(
-
+              "today" => $history->today_usage(),
+              "week" => $history->week_usage(),
+              "month" => $history->month_usage()
             )
           );
 

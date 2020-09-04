@@ -33,19 +33,28 @@
   
   
         $status->mains_in = $data_arr[0][0] ? "on" : "off";
-        $status->mains_out = $data_arr[0][1] ? "on" : "off";
-        $status->device_state = $data_arr[0][2] ? "on" : "off";
-        $status->potential_loss = $data_arr[0][3] ? "collapsed" : "restored";
-        $status->bypass_state = $data_arr[0][4] ? "bypassed" : "normal";
+        $status->mains_out = $data_arr[0][3] ? "on" : "off";
+        $status->device_state = "null";
+        $status->potential_loss = $data_arr[0][1] ? "collapsed" : "restored";
+        $status->bypass_state = $data_arr[0][2] ? "bypassed" : "normal";
         $status->voltage = $data_arr[1];
         $status->frequency = $data_arr[2];
-        $status->current_consumption = $data_arr[3];
-        $status->kwh = $data_arr[4];
-        $status->temperature = $data_arr[5];
+        $status->temperature = $data_arr[3];
+        $status->current_consumption = $data_arr[4];
+        $status->kwh = $data_arr[5];
+        $status->kwh_used = $data_arr[6];
         $status->temp_everything = $data;
+
+        if($status->kwh > tofloat($status->get_current_units_left())) {
+          // units loaded
+          $status->udpate_recharge_status();
+        } else {
+          // units not loaded
+        }
   
         try {
           $status->update_status();
+          
           echo json_encode(
             array(
               'error' => false,
@@ -62,6 +71,22 @@
       }
     } else {
       http_response_code(412);
+    }
+
+    function tofloat($num) {
+      $dotPos = strrpos($num, '.');
+      $commaPos = strrpos($num, ',');
+      $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
+          ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
+    
+      if (!$sep) {
+          return floatval(preg_replace("/[^0-9]/", "", $num));
+      }
+  
+      return floatval(
+          preg_replace("/[^0-9]/", "", substr($num, 0, $sep)) . '.' .
+          preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)))
+      );
     }
 
     

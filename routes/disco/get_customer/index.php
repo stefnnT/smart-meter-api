@@ -6,6 +6,7 @@
 
   include_once '../../../config/Database.php';
   include_once '../../../models/Disco.php';
+  include_once '../../../models/History.php';
 
   // Instantiate DB & connect
   $database = new Database();
@@ -14,12 +15,14 @@
   // Instantiate site details object
   $customers = new Disco($db);
   $checks = new Disco($db);
+  $history = new History($db);
 
   $data = json_decode(file_get_contents("php://input"));
 
   
   if ($data->meterNumber) {
     $customers->meter_number = $data->meterNumber;
+    $history->meter_number = $data->meterNumber;
 
     // Query data
     $result = $customers->get_one_subscriber();
@@ -31,6 +34,7 @@
 
       echo json_encode(
         array(
+          "stakeholderId" => $subscriber->stakeholder_id,
           "subscriberBiodata" => array(
             "firstName" => $subscriber->first_name,
             "lastName" => $subscriber->last_name, 
@@ -44,7 +48,9 @@
             "lastDeviceStatus" => $checks->get_last_status($subscriber->meter_number)
           ),
           "meterUsageHistory" => array(
-  
+            "today" => $history->today_usage(),
+            "week" => $history->week_usage(),
+            "month" => $history->month_usage()
           )
         )
       );
