@@ -21,7 +21,7 @@
     // if (isset($_POST['meter_number'])) {
       $status->meter_number = $_POST['meter_number'];
 
-      if (isset($_POST['status'])) {
+      // if (isset($_POST['status'])) {
         
         $data = $_POST['status'];
         // $data = "11110|230|49.9|12345|12345.7|100";
@@ -66,9 +66,9 @@
           echo $e;
         }
         
-      } else {
-        http_response_code(412);
-      }
+      // } else {
+      //   http_response_code(412);
+      // }
     // } else {
     //   http_response_code(412);
     // }
