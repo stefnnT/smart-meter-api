@@ -38,13 +38,28 @@
         
         if($num2 > 0) {
           $control2 = $result2->fetch();
-          echo json_encode(
-            array(
-              "status" => "success",
-              "control" => $control->state,
-              "units" => $control2->loaded === 'no' ? $control2->units : "######"
-            )
-          );
+           
+          $unit = $control2->loaded === 'no' ? $control2->units : "######";
+          if ($unit[0] !== '#') {
+            $unit *= 100;
+            $unit = strval($unit);
+            $unitArr = array();
+            for ($i = 0; $i < 6; $i++) {
+              $unit[i] ? array_push($unitArr, $unit[i]) : array_unshift($unitArr, $unit[i]);
+            }
+            $unit = join('', $unitArr);
+          }
+
+          echo $control->state.'|'.$unit; 
+          // echo "afdds";
+
+          // echo json_encode(
+          //   array(
+          //     "status" => "success",
+          //     "control" => $control->state,
+          //     "units" => $control2->loaded === 'no' ? $control2->units : "######"
+          //   )
+          // );
 
         } else {
           echo json_encode(
