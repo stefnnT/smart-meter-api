@@ -18,7 +18,7 @@
     
     // Get raw posted data
     // $data = json_decode(file_get_contents("php://input"));
-    if (isset($_POST['meter_number'])) {
+    // if (isset($_POST['meter_number'])) {
       $status->meter_number = $_POST['meter_number'];
 
       if (isset($_POST['status'])) {
@@ -69,9 +69,9 @@
       } else {
         http_response_code(412);
       }
-    } else {
-      http_response_code(412);
-    }
+    // } else {
+    //   http_response_code(412);
+    // }
 
     function tofloat($num) {
       $dotPos = strrpos($num, '.');
