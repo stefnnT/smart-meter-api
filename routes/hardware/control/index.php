@@ -2,7 +2,7 @@
     // Headers
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
-    header('Access-Control-Allow-Methods: POST');
+    header('Access-Control-Allow-Methods: GET');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../../config/Database.php';
@@ -18,12 +18,15 @@
     $token = new HardwareStatus($db);
     
     // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
-    if ($data->meterNumber) {
+    // $data = json_decode(file_get_contents("php://input"));
+    // if ($data->meterNumber) {
+    if ($_GET['meter_number']) {
 
-      $state->meter_number = $data->meterNumber;
-      $token->meter_number = $data->meterNumber;
+      // $state->meter_number = $data->meterNumber;
+      // $token->meter_number = $data->meterNumber;
       
+      $state->meter_number = $_GET['meter_number'];
+      $token->meter_number = $_GET['meter_number'];
 
       // Query data
       $result = $state->get_hardware_state();
