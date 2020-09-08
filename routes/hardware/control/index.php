@@ -43,13 +43,19 @@
           $control2 = $result2->fetch();
            
           $unit = $control2->loaded === 'no' ? $control2->units : "######";
+          // echo $unit;
           if ($unit[0] !== '#') {
             $unit *= 100;
             $unit = strval($unit);
             $unitArr = array();
             for ($i = 0; $i < 6; $i++) {
-              $unit[i] ? array_push($unitArr, $unit[i]) : array_unshift($unitArr, $unit[i]);
+              if (isset($unit[$i])) {
+                array_push($unitArr, $unit[$i]);
+              } else {
+                array_unshift($unitArr, 0);
+              }
             }
+            // var_dump( $unitArr);
             $unit = join('', $unitArr);
           }
 

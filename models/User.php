@@ -84,7 +84,6 @@
       $this->meter_number = htmlspecialchars(strip_tags($this->meter_number));
       $this->units = htmlspecialchars(strip_tags($this->calc_units($this->tarriff, $this->amount, $this->stakeholder_id)));
       
-      
       //Bind named parameters
       $stmt->bindParam(':meter_number', $this->meter_number);
       $stmt->bindParam(':units', $this->units);
