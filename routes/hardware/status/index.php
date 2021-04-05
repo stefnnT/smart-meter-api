@@ -31,17 +31,17 @@
   
         $data_arr = explode("|", $data);
 
-        $status->mains_in = "disregard"
-        $status->mains_out = "disregard"
-        $status->device_state = "disregard"
-        $status->potential_loss = "disregard"
-        $status->bypass_state = "disregard"
-        $status->voltage = "disregard"
-        $status->frequency = "disregard"
-        $status->temperature = "disregard"
-        $status->current_consumption = "disregard"
-        $status->kwh = "disregard"
-        $status->kwh_used = "disregard"
+        $status->mains_in = "disregard";
+        $status->mains_out = "disregard";
+        $status->device_state = "disregard";
+        $status->potential_loss = "disregard";
+        $status->bypass_state = "disregard";
+        $status->voltage = "disregard";
+        $status->frequency = "disregard";
+        $status->temperature = "disregard";
+        $status->current_consumption = "disregard";
+        $status->kwh = "disregard";
+        $status->kwh_used = "disregard";
         $status->temp_everything = $data;
   
   
