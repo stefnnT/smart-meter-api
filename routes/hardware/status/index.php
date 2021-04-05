@@ -17,12 +17,12 @@
     $status = new HardwareStatus($db);
     
     // Get raw posted data
-    // $data = json_decode(file_get_contents("php://input"));
+    $data = json_decode(file_get_contents("php://input"));
     // if (isset($_POST['meter_number'])) {
       // $status->meter_number = $_POST['meter_number'];
 
       if (isset($_POST['status']) && $_POST['status']) {
-        
+        echo 'got here';
         $data = $_POST['status'];
         // $data = "11110|230|49.9|12345|12345.7|100";
         // echo $data;
