@@ -30,20 +30,33 @@
         http_response_code(202);
   
         $data_arr = explode("|", $data);
-  
-  
-        $status->mains_in = $data_arr[0][0] ? "on" : "off";
-        $status->mains_out = $data_arr[0][3] ? "on" : "off";
-        $status->device_state = "null";
-        $status->potential_loss = $data_arr[0][1] ? "collapsed" : "restored";
-        $status->bypass_state = $data_arr[0][2] ? "bypassed" : "normal";
-        $status->voltage = $data_arr[1];
-        $status->frequency = $data_arr[2];
-        $status->temperature = $data_arr[3];
-        $status->current_consumption = $data_arr[4];
-        $status->kwh = $data_arr[5];
-        $status->kwh_used = $data_arr[6];
+
+        $status->mains_in = "disregard"
+        $status->mains_out = "disregard"
+        $status->device_state = "disregard"
+        $status->potential_loss = "disregard"
+        $status->bypass_state = "disregard"
+        $status->voltage = "disregard"
+        $status->frequency = "disregard"
+        $status->temperature = "disregard"
+        $status->current_consumption = "disregard"
+        $status->kwh = "disregard"
+        $status->kwh_used = "disregard"
         $status->temp_everything = $data;
+  
+  
+        // $status->mains_in = $data_arr[0][0] ? "on" : "off";
+        // $status->mains_out = $data_arr[0][3] ? "on" : "off";
+        // $status->device_state = "null";
+        // $status->potential_loss = $data_arr[0][1] ? "collapsed" : "restored";
+        // $status->bypass_state = $data_arr[0][2] ? "bypassed" : "normal";
+        // $status->voltage = $data_arr[1];
+        // $status->frequency = $data_arr[2];
+        // $status->temperature = $data_arr[3];
+        // $status->current_consumption = $data_arr[4];
+        // $status->kwh = $data_arr[5];
+        // $status->kwh_used = $data_arr[6];
+        // $status->temp_everything = $data;
 
         if($status->kwh > tofloat($status->get_current_units_left())) {
           // units loaded
