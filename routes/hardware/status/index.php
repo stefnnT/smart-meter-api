@@ -90,7 +90,9 @@
           $status->update_status();
           
           echo json_encode(
+            
             array(
+              'response' => $resp,
               'error' => false,
               'code' => 200,
               'message' => 'Status Updated'
