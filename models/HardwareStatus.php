@@ -218,4 +218,18 @@
             $stmt->execute();
             return;
         }
+
+        public function get_all_status() {
+            //query
+            $query = 'SELECT * FROM  device_status';
+
+            // Prepare statement
+            $stmt = $this->conn->prepare($query);
+
+            // Execute query
+            $stmt->execute();
+            
+
+            return $stmt;
+        }
     }
