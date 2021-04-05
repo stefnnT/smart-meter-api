@@ -15,7 +15,7 @@
 
     // Instantiate status object
     $status = new HardwareStatus($db);
-    $_POST['meter_number'] = '123';
+    $_POST['meter_number'] = '14241794702';
     // Get raw posted data
     // $data = json_decode(file_get_contents("php://input"));
     if (isset($_POST['meter_number'])) {
