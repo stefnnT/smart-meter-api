@@ -26,19 +26,21 @@
         $data = $_POST['status'];
         
         // foreign code
-        $url = 'https://powercase.natterbase.com/powercheck/user/stats/hook/00017';
-        $data = array('key1' => 'value1', 'key2' => 'value2');
+        $curl = curl_init();
 
-        // use key 'http' even if you send the request to https://...
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => "status=".$data
-            )
+        $headers = array(
+            'Content-Type: application/x-www-form-urlencoded',
+            'Accept: application/json'
         );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+
+        $url = 'https://powercase.natterbase.com/powercheck/user/stats/hook/00017';
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POST, 1);
+
+        $resp = curl_exec($curl);
 
         // foreign code ends here
 
