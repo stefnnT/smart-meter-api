@@ -17,6 +17,7 @@
     $state = new HardwareStatus($db);
     $token = new HardwareStatus($db);
     
+    echo "10101111";
     // Get raw posted data
     // $data = json_decode(file_get_contents("php://input"));
     // if ($data->meterNumber) {
