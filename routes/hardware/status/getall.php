@@ -31,7 +31,6 @@
           $post_item = array(
             "rawStatus" => $each->temp_everything,
             "time" => $each->time_stamp
-            )
           );
 
           // push each record
