@@ -221,7 +221,7 @@
 
         public function get_all_status() {
             //query
-            $query = 'SELECT * FROM  device_status ORDERBY time_stamp DESC';
+            $query = 'SELECT * FROM  device_status ORDER BY time_stamp DESC';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
