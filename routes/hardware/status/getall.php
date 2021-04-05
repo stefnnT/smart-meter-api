@@ -13,7 +13,7 @@
 
   // Instantiate site details object
   $status = new HardwareStatus($db);
-  echo "got heregi"
+  echo "got heregi";
   // Query data
   $result = $status->get_all_status();
   // Get row count
