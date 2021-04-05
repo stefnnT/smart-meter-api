@@ -15,14 +15,14 @@
 
     // Instantiate status object
     $status = new HardwareStatus($db);
-    
+    $_POST['meter_number'] = '123';
     // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
-    // if (isset($_POST['meter_number'])) {
-      // $status->meter_number = $_POST['meter_number'];
+    // $data = json_decode(file_get_contents("php://input"));
+    if (isset($_POST['meter_number'])) {
+      $status->meter_number = $_POST['meter_number'];
 
       if (isset($_POST['status']) && $_POST['status']) {
-        echo 'got here';
+        
         $data = $_POST['status'];
         // $data = "11110|230|49.9|12345|12345.7|100";
         // echo $data;
@@ -58,12 +58,12 @@
         // $status->kwh_used = $data_arr[6];
         // $status->temp_everything = $data;
 
-        // if($status->kwh > tofloat($status->get_current_units_left())) {
-        //   // units loaded
-        //   $status->udpate_recharge_status();
-        // } else {
-        //   // units not loaded
-        // }
+        if($status->kwh > tofloat($status->get_current_units_left())) {
+          // units loaded
+          $status->udpate_recharge_status();
+        } else {
+          // units not loaded
+        }
   
         try {
           $status->update_status();
@@ -82,9 +82,9 @@
       } else {
         http_response_code(412);
       }
-    // } else {
-    //   http_response_code(412);
-    // }
+    } else {
+      http_response_code(412);
+    }
 
     function tofloat($num) {
       $dotPos = strrpos($num, '.');
