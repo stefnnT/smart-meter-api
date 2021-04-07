@@ -22,7 +22,7 @@
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_URL, $url);
     // curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_HTTPGET, 1);
     // curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
 
     $resp = curl_exec($curl);
