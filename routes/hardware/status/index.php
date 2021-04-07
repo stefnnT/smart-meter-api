@@ -34,7 +34,7 @@
         );
 
         $fields = http_build_query(array(
-          'status' => '228|0_0000|1_0120|0_0000|1_0069|0_0000|0_0000|0_0000|0_0000|G'
+          'status' => $data
         ));
 
         $url = 'https://powercase.natterbase.com/powercheck/user/stats/hook/00017';
